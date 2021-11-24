@@ -32,7 +32,7 @@ app.post("/tarefa/nova", async (req, res) => {
     const { description, done } = req.body;
     const task = new tasks({ description, done });
     await task.save();
-    res.status(201).send(task);
+    res.status(201).json(task);
   } catch (error) {
     res.status(404).json({ msj: "Erro de Cadastro!" });
     console.log("Erro de Cadastro!");
@@ -44,9 +44,9 @@ app.get("/tarefa/:id", async (req, res) => {
   try {
     const task = await tasks.findByPk(req.params.id);
     if (task) {
-      res.status(200).send({ task });
+      res.status(200).json({ task });
     } else {
-      res.status(404).send("Dados Não encontrados!");
+      res.status(404).json("Dados Não encontrados!");
     }
   } catch (error) {
     console.log(error);
@@ -60,9 +60,9 @@ app.put("/tarefa/:id", async (req, res) => {
     const task = await tasks.findByPk(req.params.id);
     if ((task && req.body.description) || req.body.done) {
       await task.update(req.body);
-      res.status(201).send(task);
+      res.status(201).json(task);
     } else {
-      res.status(404).send("Erro dados não encontrado!");
+      res.status(404).json("Erro dados não encontrado!");
     }
   } catch (error) {
     res.status(404).json({ msj: "Erro dados não encontrado!" });
@@ -76,9 +76,9 @@ app.delete("/tarefa/:id", async (req, res) => {
     const task = await tasks.findByPk(req.params.id);
     if (task) {
       await task.destroy();
-      res.status(200).send("Tarefa deletada com Sucesso!");
+      res.status(200).json("Tarefa deletada com Sucesso!");
     } else {
-      res.status(404).send("Dados não encontrados");
+      res.status(404).json("Dados não encontrados");
     }
   } catch (error) {
     res.status(404).json({ msj: "Erro dados não encontrado!" });
